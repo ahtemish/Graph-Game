@@ -1,15 +1,18 @@
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Scanner;
+
+import controller.GraphController;
+import model.BasicTravelGraph;
+import model.NodeLocation;
+import model.TravelGraph;
 
 /**
  * The actual game.
  */
 public class GraphGame {
   public static void main(String[] args) {
-    Scanner scan = new Scanner(System.in);
-    boolean exit = false;
-
-    BasicTravelGraph graph = new BasicTravelGraph();
+    TravelGraph graph = new BasicTravelGraph();
     graph.addNode(new NodeLocation("Boston"));
     graph.addNode(new NodeLocation("NYC"));
     graph.addNode(new NodeLocation("Providence"));
@@ -18,38 +21,10 @@ public class GraphGame {
 
     //  <- Chicago <-> /|Boston|\ <-> NYC <-> Baltimore <-> Providence ->
 
-    while (!exit) {
-      System.out.print("\nCurrently in " + graph.getCurrentNode().getName() + ".\n");
-      System.out.print(graph.getGraph().toString() + "\n");
+    InputStreamReader input = new InputStreamReader(System.in);
+    GraphController controller = new GraphController(graph, input,
+            System.out);
 
-      String input;
-      if (scan.hasNext()) {
-        input = scan.next();
-      } else {
-        exit = true;
-        System.out.print("Game quit prematurely.");
-        continue;
-      }
-
-
-
-      switch(input) {
-        case "exit":
-          exit = true;
-          System.out.println("Quit game.\n");
-          break;
-        case "goto":
-          if (!scan.hasNext()) {
-            System.out.print("Please enter the name of the destination.\n");
-          }
-          String dest = scan.next();
-
-          try {
-            graph.moveToNode(dest);
-          } catch (IllegalArgumentException e) {
-            System.out.println(e.getLocalizedMessage());
-          }
-      }
-    }
+    controller.startGame();
   }
 }

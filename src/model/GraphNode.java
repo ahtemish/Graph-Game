@@ -1,3 +1,5 @@
+package model;
+
 /**
  * An interface representing a node on a graph.
  */
