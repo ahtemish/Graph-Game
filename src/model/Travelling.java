@@ -48,7 +48,11 @@ public abstract class Travelling implements TravelGraph {
         moved = true;
       }
       if (!moved) {
-        throw new IllegalArgumentException("Cannot travel to destination node from current node.");
+        if (currentNode.getName().equals(name)) {
+          throw new IllegalArgumentException("Already at name node.");
+        } else {
+          throw new IllegalArgumentException("Cannot travel to destination node from current node.");
+        }
       }
     } else {
       throw new IllegalArgumentException("Named node does not exist in this graph.");

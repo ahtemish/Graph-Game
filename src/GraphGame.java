@@ -1,14 +1,14 @@
-import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 
 import controller.GraphController;
 import model.BasicTravelGraph;
+import model.Direction;
 import model.NodeLocation;
+import model.OneWayGraph;
 import model.TravelGraph;
 
 /**
- * The actual game.
+ * Runs the game.
  */
 public class GraphGame {
   public static void main(String[] args) {

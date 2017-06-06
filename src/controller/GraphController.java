@@ -27,6 +27,8 @@ public class GraphController {
       Scanner scan = new Scanner(read);
       boolean exit = false;
 
+      app.append("\nType 'help' for commands.\n");
+
       while (!exit) {
         message = "\nCurrently in " + graph.getCurrentNode().getName() + ".\n" +
                 graph.getGraph().toString() + "\n";
@@ -60,6 +62,10 @@ public class GraphController {
               message = "\n" + e.getLocalizedMessage() + "\n";
               app.append(message);
             }
+            break;
+          case "help":
+            app.append("quit - stop the game.\ngoto (city name) - move to the named city.\n" +
+                    "help - brings up this page.\n");
             break;
           default:
             app.append("\nCommand not recognized.\n");

@@ -14,7 +14,8 @@ public class NodeLocation implements GraphNode {
     return name;
   }
 
+  @Override
   public String toString() {
-    return name;
+    return getName();
   }
 }
