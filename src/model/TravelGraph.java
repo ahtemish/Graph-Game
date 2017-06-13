@@ -14,13 +14,9 @@ public interface TravelGraph {
 
   void moveToNode(String name);
 
-  void addNode(GraphNode node);
-
-  void addNodeAtPosition(int index, GraphNode node);
-
-  void addNodeBefore(String name, GraphNode node);
-
   void removeNode(String name);
 
   void removeNode(int index);
+
+  List<String> getCurrentDestinations();
 }

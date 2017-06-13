@@ -1,11 +1,12 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A graph that allows travel forwards and backwards from a node.
  */
-public class BasicTravelGraph extends Travelling {
+public class BasicTravelGraph extends TravellingWithoutEdges {
 
 
   public BasicTravelGraph() {
@@ -13,7 +14,7 @@ public class BasicTravelGraph extends Travelling {
     this.currentNode = null;
   }
 
-  public BasicTravelGraph(ArrayList<GraphNode> graph, GraphNode startNode) {
+  public BasicTravelGraph(List<GraphNode> graph, GraphNode startNode) {
     this.graph = graph;
     this.currentNode = startNode;
   }
@@ -31,6 +32,4 @@ public class BasicTravelGraph extends Travelling {
               || graph.get(graph.indexOf(currentNode) + 1).getName().equals(name);
     }
   }
-
-
 }

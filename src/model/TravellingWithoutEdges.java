@@ -1,11 +1,12 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Abstract class containing methods shared between TravelGraphs.
+ * Abstract class containing methods shared between TravelGraphs that don't deal with edges.
  */
-public abstract class Travelling implements TravelGraph {
+abstract class TravellingWithoutEdges implements GraphWithoutEdges {
   List<GraphNode> graph;
   GraphNode currentNode;
 
@@ -39,6 +40,13 @@ public abstract class Travelling implements TravelGraph {
     return graph;
   }
 
+  public void addNode(GraphNode node) {
+    if (graph.size() == 0) {
+      currentNode = node;
+    }
+    graph.add(node);
+  }
+
   public void moveToNode(String name) {
     boolean moved = false;
 
@@ -49,21 +57,14 @@ public abstract class Travelling implements TravelGraph {
       }
       if (!moved) {
         if (currentNode.getName().equals(name)) {
-          throw new IllegalArgumentException("Already at name node.");
+          throw new IllegalArgumentException("Already at " + name + ".");
         } else {
-          throw new IllegalArgumentException("Cannot travel to destination node from current node.");
+          throw new IllegalArgumentException("Cannot travel to "+ name + " from " + currentNode.getName() + ".");
         }
       }
     } else {
-      throw new IllegalArgumentException("Named node does not exist in this graph.");
+      throw new IllegalArgumentException(name + " does not exist in this graph.");
     }
-  }
-
-  public void addNode(GraphNode node) {
-    if (graph.size() == 0) {
-      currentNode = node;
-    }
-    graph.add(node);
   }
 
   public void addNodeAtPosition(int index, GraphNode node) {
@@ -81,11 +82,25 @@ public abstract class Travelling implements TravelGraph {
     graph.add(findNodeIndex(name), node);
   }
 
+  public void addNodeAfter(String name, GraphNode node) {
+    graph.add(findNodeIndex(name) + 1, node);
+  }
+
   public void removeNode(String name) {
     graph.remove(findNodeIndex(name));
   }
 
   public void removeNode(int index) {
     graph.remove(index);
+  }
+
+  public List<String> getCurrentDestinations() {
+    ArrayList<String> destinations = new ArrayList<>();
+    for (GraphNode n : graph) {
+      if(canMoveTo(n.getName())) {
+        destinations.add(n.getName());
+      }
+    }
+    return destinations;
   }
 }

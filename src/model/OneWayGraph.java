@@ -1,11 +1,12 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A graph that allows travel in only one direction.
  */
-public class OneWayGraph extends Travelling {
+public class OneWayGraph extends TravellingWithoutEdges {
   private Direction direction;
 
   public OneWayGraph() {
@@ -20,7 +21,7 @@ public class OneWayGraph extends Travelling {
     this.direction = direction;
   }
 
-  public OneWayGraph(ArrayList<GraphNode> graph, GraphNode startNode, Direction direction) {
+  public OneWayGraph(List<GraphNode> graph, GraphNode startNode, Direction direction) {
     this.graph = graph;
     this.currentNode = startNode;
     this.direction = direction;

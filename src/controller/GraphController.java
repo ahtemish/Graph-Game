@@ -65,7 +65,12 @@ public class GraphController {
             break;
           case "help":
             app.append("quit - stop the game.\ngoto (city name) - move to the named city.\n" +
-                    "help - brings up this page.\n");
+                    "help - brings up this page.\nwhere - lists the cities visitable from the" +
+                    " current city.\n");
+            break;
+          case "where":
+            message = graph.getCurrentDestinations().toString() + "\n";
+            app.append(message);
             break;
           default:
             app.append("\nCommand not recognized.\n");
