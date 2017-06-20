@@ -1,7 +1,9 @@
-package model;
+package model.legacy.noEdges;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import model.GraphNode;
 
 /**
  * A graph that allows travel forwards and backwards from a node.

@@ -3,17 +3,17 @@ package controller;
 import java.io.IOException;
 import java.util.Scanner;
 
-import model.TravelGraph;
+import model.GraphWithEdges;
 
 /**
  * Controls how a player interacts with graphs.
  */
 public class GraphController {
-  private TravelGraph graph;
+  private GraphWithEdges graph;
   private Readable read;
   private Appendable app;
 
-  public GraphController(TravelGraph graph, Readable read, Appendable app) {
+  public GraphController(GraphWithEdges graph, Readable read, Appendable app) {
     this.graph = graph;
     this.read = read;
     this.app = app;
@@ -66,11 +66,32 @@ public class GraphController {
           case "help":
             app.append("quit - stop the game.\ngoto (city name) - move to the named city.\n" +
                     "help - brings up this page.\nwhere - lists the cities visitable from the" +
-                    " current city.\n");
+                    " current city.\nconnect (from) (to) - make a connection from the first city" +
+                    " to the second one.\n");
             break;
           case "where":
             message = graph.getCurrentDestinations().toString() + "\n";
             app.append(message);
+            break;
+          case "connect":
+            if (!scan.hasNext()) {
+              app.append("Please enter the city you want to connect from.");
+            }
+            String first = scan.next();
+
+            if (!scan.hasNext()) {
+              app.append("Please enter the city you want to connect to.");
+            }
+            String second = scan.next();
+
+            try {
+              graph.addConnection(first, second);
+              message = "\nConnected " + first + " to " + second + "!\n";
+              app.append(message);
+            } catch (IllegalArgumentException e) {
+              message = "\n" + e.getLocalizedMessage() + "\n";
+              app.append(message);
+            }
             break;
           default:
             app.append("\nCommand not recognized.\n");

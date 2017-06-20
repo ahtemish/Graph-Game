@@ -2,27 +2,15 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import controller.GraphController;
-import model.BasicTravelGraph;
 import model.GraphNode;
 import model.GraphWithEdges;
-import model.GraphWithoutEdges;
-import model.OneWayGraph;
 import model.SetEdgeGraph;
-import model.TravelGraph;
 
 /**
  * Runs the game.
  */
 public class GraphGame {
   public static void main(String[] args) {
-    GraphWithoutEdges graph = new OneWayGraph();
-    graph.addNode(new GraphNode("Boston"));
-    graph.addNode(new GraphNode("Providence"));
-    graph.addNodeAtPosition(2, new GraphNode("Baltimore"));
-    graph.addNodeBefore("Boston", new GraphNode("Chicago"));
-    graph.addNodeAfter("Boston", new GraphNode("NYC"));
-
-    //  <- Chicago <-> /|Boston|\ <-> NYC <-> Providence <-> Baltimore ->
 
     GraphWithEdges graph2 = new SetEdgeGraph();
     ArrayList<String> boston = new ArrayList<>();
@@ -46,8 +34,9 @@ public class GraphGame {
     nyc.add("Boston");
     graph2.addNodeAfter("Boston", new GraphNode("NYC"), nyc);
 
+
     InputStreamReader input = new InputStreamReader(System.in);
-    GraphController controller = new GraphController(graph, input,
+    GraphController controller = new GraphController(graph2, input,
             System.out);
 
     controller.startGame();

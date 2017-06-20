@@ -121,4 +121,16 @@ abstract class TravellingWithEdges implements GraphWithEdges {
   public void removeNode(int index) {
     graph.remove(index);
   }
+
+  public void addConnection(String from, String to) throws IllegalArgumentException {
+    if(nodeInGraph(from) && nodeInGraph(to)) {
+      for (GraphEdge e: edges) {
+        if (e.getNode().equals(graph.get(findNodeIndex(from)))) {
+          e.addVisitable(to);
+        }
+      }
+    } else {
+      throw new IllegalArgumentException("One of the cities does not exist in this graph.");
+    }
+  }
 }

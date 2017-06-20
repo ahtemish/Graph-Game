@@ -25,4 +25,10 @@ class GraphEdge {
   List<String> getVisitable() {
     return visitable;
   }
+
+  void addVisitable(String city) {
+    if(!visitable.contains(city)) {
+      visitable.add(city);
+    }
+  }
 }

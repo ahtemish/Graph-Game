@@ -1,7 +1,9 @@
-package model;
+package model.legacy.noEdges;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import model.GraphNode;
 
 /**
  * Abstract class containing methods shared between TravelGraphs that don't deal with edges.

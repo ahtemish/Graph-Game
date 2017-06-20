@@ -1,8 +1,8 @@
-package model;
+package model.legacy.noEdges;
 
 /**
  * To specify directions of travel along a graph.
  */
-public enum Direction {
+enum Direction {
   forward, backward
 }
