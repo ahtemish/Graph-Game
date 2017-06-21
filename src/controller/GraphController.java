@@ -93,6 +93,26 @@ public class GraphController {
               app.append(message);
             }
             break;
+          case "disconnect":
+            if (!scan.hasNext()) {
+              app.append("Please enter the city you want to disconnect from.");
+            }
+            String firstDis = scan.next();
+
+            if (!scan.hasNext()) {
+              app.append("Please enter the city you want to disconnect to.");
+            }
+            String secondDis = scan.next();
+
+            try {
+              graph.removeConnection(firstDis, secondDis);
+              message = "\nDisconnected " + firstDis + " and " + secondDis + ".\n";
+              app.append(message);
+            } catch (IllegalArgumentException e) {
+              message = "\n" + e.getLocalizedMessage() + "\n";
+              app.append(message);
+            }
+            break;
           default:
             app.append("\nCommand not recognized.\n");
         }

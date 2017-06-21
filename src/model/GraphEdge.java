@@ -31,4 +31,10 @@ class GraphEdge {
       visitable.add(city);
     }
   }
+
+  void removeVisitable(String city) {
+    if(visitable.contains(city)) {
+      visitable.remove(city);
+    }
+  }
 }

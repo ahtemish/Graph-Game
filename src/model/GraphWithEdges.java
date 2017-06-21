@@ -14,9 +14,7 @@ public interface GraphWithEdges {
 
   void moveToNode(String name);
 
-  void removeNode(String name);
-
-  void removeNode(int index);
+  void removeConnection(String from, String to);
 
   List<String> getCurrentDestinations();
 
