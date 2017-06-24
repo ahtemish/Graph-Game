@@ -19,17 +19,5 @@ public class SetEdgeGraph extends TravellingWithEdges {
     this.graph = graph;
     this.currentNode = startNode;
     this.edges = edges;
-
-    if (!checkNodesAndEdges()) {
-      throw new IllegalArgumentException("Graph node list and edge list do not contain the same nodes.");
-    }
-  }
-
-  private boolean checkNodesAndEdges() {
-    List<GraphNode> edgeNodes = new ArrayList<>();
-    for (GraphEdge e : edges) {
-      edgeNodes.add(e.getNode());
-    }
-    return graph.containsAll(edgeNodes) && edgeNodes.containsAll(graph);
   }
 }

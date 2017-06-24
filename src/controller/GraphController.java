@@ -1,9 +1,11 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import model.GraphWithEdges;
+import view.ViewFrame;
 
 /**
  * Controls how a player interacts with graphs.
@@ -12,11 +14,14 @@ public class GraphController {
   private GraphWithEdges graph;
   private Readable read;
   private Appendable app;
+  private MouseHandler mHandler;
+  private ViewFrame view;
 
   public GraphController(GraphWithEdges graph, Readable read, Appendable app) {
     this.graph = graph;
     this.read = read;
     this.app = app;
+    this.view = new ViewFrame();
   }
 
 
@@ -24,6 +29,9 @@ public class GraphController {
     String message;
 
     try {
+      view.initialize(new ArrayList<>());
+      mHandler = new MouseHandler();
+      view.addMouseListener(mHandler);
       Scanner scan = new Scanner(read);
       boolean exit = false;
 
@@ -85,7 +93,7 @@ public class GraphController {
             String second = scan.next();
 
             try {
-              graph.addConnection(first, second);
+              graph.addEdge(first, second);
               message = "\nConnected " + first + " to " + second + "!\n";
               app.append(message);
             } catch (IllegalArgumentException e) {
@@ -105,7 +113,7 @@ public class GraphController {
             String secondDis = scan.next();
 
             try {
-              graph.removeConnection(firstDis, secondDis);
+              graph.removeEdge(firstDis, secondDis);
               message = "\nDisconnected " + firstDis + " and " + secondDis + ".\n";
               app.append(message);
             } catch (IllegalArgumentException e) {
@@ -121,4 +129,6 @@ public class GraphController {
       // Hopefully won't happen.
     }
   }
+
+
 }

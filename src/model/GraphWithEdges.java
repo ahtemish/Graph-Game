@@ -14,17 +14,9 @@ public interface GraphWithEdges {
 
   void moveToNode(String name);
 
-  void removeConnection(String from, String to);
+  void removeEdge(String name1, String name2);
 
   List<String> getCurrentDestinations();
 
-  void addConnection(String from, String to);
-
-  void addNode(GraphNode node, List<String> destinations);
-
-  void addNodeAtPosition(int index, GraphNode node, List<String> destinations);
-
-  void addNodeBefore(String name, GraphNode node, List<String> destinations);
-
-  void addNodeAfter(String name, GraphNode node, List<String> destinations);
+  void addEdge(String name1, String name2);
 }

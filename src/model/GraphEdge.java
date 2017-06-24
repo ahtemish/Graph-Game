@@ -1,40 +1,26 @@
 package model;
 
+import com.sun.corba.se.impl.orbutil.graph.Graph;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A list of nodes that represents the edges between the node and those in the list.
  */
 class GraphEdge {
-  private GraphNode node;
-  private List<String> visitable;
+  private GraphNode node1;
+  private GraphNode node2;
 
-  GraphEdge(GraphNode node, List<String> visitable) {
-    this.node = node;
-    this.visitable = visitable;
+  GraphEdge(GraphNode node1, GraphNode node2) {
+    this.node1 = node1;
+    this.node2 = node2;
   }
 
-  GraphNode getNode() {
-    return node;
-  }
-
-  boolean isVisitable(String destination) {
-    return visitable.contains(destination);
-  }
-
-  List<String> getVisitable() {
-    return visitable;
-  }
-
-  void addVisitable(String city) {
-    if(!visitable.contains(city)) {
-      visitable.add(city);
-    }
-  }
-
-  void removeVisitable(String city) {
-    if(visitable.contains(city)) {
-      visitable.remove(city);
-    }
+  List<GraphNode> getNodes() {
+    List<GraphNode> nodes = new ArrayList<>();
+    nodes.add(node1);
+    nodes.add(node2);
+    return nodes;
   }
 }

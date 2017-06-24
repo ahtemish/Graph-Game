@@ -42,12 +42,16 @@ abstract class TravellingWithEdges implements GraphWithEdges {
   }
 
   public List<String> getCurrentDestinations() {
+    List<String> dest = new ArrayList<>();
+
     for (GraphEdge e : edges) {
-      if(e.getNode().equals(currentNode)) {
-        return e.getVisitable();
+      if (e.getNodes().get(0).equals(currentNode)) {
+        dest.add(e.getNodes().get(1).getName());
+      } else if (e.getNodes().get(1).equals(currentNode)) {
+        dest.add(e.getNodes().get(0).getName());
       }
     }
-    return new ArrayList<>();
+    return dest;
   }
 
   public void moveToNode(String name) {
@@ -62,7 +66,7 @@ abstract class TravellingWithEdges implements GraphWithEdges {
         if (currentNode.getName().equals(name)) {
           throw new IllegalArgumentException("Already at " + name + ".");
         } else {
-          throw new IllegalArgumentException("Cannot travel to "+ name + " from " + currentNode.getName() + ".");
+          throw new IllegalArgumentException("Cannot travel to " + name + " from " + currentNode.getName() + ".");
         }
       }
     } else {
@@ -71,71 +75,48 @@ abstract class TravellingWithEdges implements GraphWithEdges {
   }
 
   public boolean canMoveTo(String name) throws IllegalArgumentException {
-    GraphEdge check = null;
-    for (GraphEdge e : edges) {
-      if (e.getNode().equals(currentNode)) {
-        check = e;
-      }
-    }
-    if (check == null) {
-      throw new IllegalArgumentException(currentNode.getName() + " has no known destinations.");
-    }
-
-    return check.isVisitable(name);
+    return (getCurrentDestinations().contains(name));
   }
 
-  public void addNode(GraphNode node, List<String> destinations) {
+  public void addEdge(String name1, String name2) {
+    GraphNode node1 = new GraphNode(name1);
+    GraphNode node2 = new GraphNode(name2);
     if (graph.size() == 0) {
-      currentNode = node;
-    }
-    graph.add(node);
-    edges.add(new GraphEdge(node, destinations));
-  }
-
-  public void addNodeAtPosition(int index, GraphNode node, List<String> destinations) {
-    if (index >= 0 || index < graph.size()) {
-      if (graph.size() == 0) {
-        currentNode = node;
-      }
-      graph.add(index, node);
-      edges.add(new GraphEdge(node, destinations));
+      currentNode = node1;
+      graph.add(node1);
+      graph.add(node2);
+      edges.add(new GraphEdge(node1, node2));
     } else {
-      throw new IllegalArgumentException("Index out of bounds.");
-    }
-  }
-
-  public void addNodeBefore(String name, GraphNode node, List<String> destinations) {
-    graph.add(findNodeIndex(name), node);
-    edges.add(new GraphEdge(node, destinations));
-  }
-
-  public void addNodeAfter(String name, GraphNode node, List<String> destinations) {
-    graph.add(findNodeIndex(name) + 1, node);
-    edges.add(new GraphEdge(node, destinations));
-  }
-
-  public void removeConnection(String from, String to) throws IllegalArgumentException {
-    if(nodeInGraph(from) && nodeInGraph(to)) {
-      for (GraphEdge e: edges) {
-        if (e.getNode().equals(graph.get(findNodeIndex(from)))) {
-          e.removeVisitable(to);
-          if(e.getVisitable().isEmpty()) {
-            //graph.remove(e.getNode());
-            //edges.remove(e);
-          }
+      if (!nodeInGraph(name1) && !nodeInGraph(name2)) {
+        throw new IllegalArgumentException("Neither node is in the graph, cannot add this edge.");
+      } else {
+        if (!nodeInGraph(name1)) {
+          graph.add(node1);
+        }
+        if (!nodeInGraph(name2)) {
+          graph.add(node2);
         }
       }
-    } else {
-      throw new IllegalArgumentException("One of the cities does not exist in this graph.");
+      edges.add(new GraphEdge(node1, node2));
     }
   }
 
-  public void addConnection(String from, String to) throws IllegalArgumentException {
-    if(nodeInGraph(from) && nodeInGraph(to)) {
-      for (GraphEdge e: edges) {
-        if (e.getNode().equals(graph.get(findNodeIndex(from)))) {
-          e.addVisitable(to);
+  public void removeEdge(String name1, String name2) throws IllegalArgumentException {
+    int remIndex = 0;
+    boolean remove = false;
+
+    if (nodeInGraph(name1) && nodeInGraph(name2)) {
+      for (GraphEdge e : edges) {
+        if (e.getNodes().contains(new GraphNode(name1)) &&
+                e.getNodes().contains(new GraphNode(name2))) {
+          remove = true;
+          remIndex = edges.indexOf(e);
         }
+      }
+      if (remove) {
+        edges.remove(remIndex);
+      } else {
+        throw new IllegalArgumentException("No edge exists between these two cities.");
       }
     } else {
       throw new IllegalArgumentException("One of the cities does not exist in this graph.");
