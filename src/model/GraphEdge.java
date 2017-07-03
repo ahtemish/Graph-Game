@@ -1,14 +1,12 @@
 package model;
 
-import com.sun.corba.se.impl.orbutil.graph.Graph;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A list of nodes that represents the edges between the node and those in the list.
  */
-class GraphEdge {
+public class GraphEdge {
   private GraphNode node1;
   private GraphNode node2;
 
@@ -22,5 +20,12 @@ class GraphEdge {
     nodes.add(node1);
     nodes.add(node2);
     return nodes;
+  }
+
+  public List<String> getNames() {
+    List<String> names = new ArrayList<>();
+    names.add(node1.getName());
+    names.add(node2.getName());
+    return names;
   }
 }

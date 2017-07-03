@@ -12,6 +12,8 @@ public interface GraphWithEdges {
 
   List<GraphNode> getGraph();
 
+  List<GraphEdge> getEdges();
+
   void moveToNode(String name);
 
   void removeEdge(String name1, String name2);

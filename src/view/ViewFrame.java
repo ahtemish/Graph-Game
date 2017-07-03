@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.swing.*;
 
+import model.GraphEdge;
+
 /**
  * A frame to hold the view.
  */
@@ -17,8 +19,8 @@ public class ViewFrame extends JFrame {
     this.add(panel);
   }
 
-  public void initialize(List<City> cities) {
-    panel.initialize(cities);
+  public void initialize(List<City> cities, List<GraphEdge> edges) {
+    panel.initialize(cities, edges);
     panel.setBackground(Color.BLACK);
 
     this.pack();

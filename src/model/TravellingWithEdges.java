@@ -54,6 +54,10 @@ abstract class TravellingWithEdges implements GraphWithEdges {
     return dest;
   }
 
+  public List<GraphEdge> getEdges() {
+    return edges;
+  }
+
   public void moveToNode(String name) {
     boolean moved = false;
 

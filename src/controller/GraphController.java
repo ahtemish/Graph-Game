@@ -1,10 +1,17 @@
 package controller;
 
+import com.sun.corba.se.impl.orbutil.graph.Graph;
+
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
+import model.GraphNode;
 import model.GraphWithEdges;
+import view.City;
 import view.ViewFrame;
 
 /**
@@ -29,7 +36,13 @@ public class GraphController {
     String message;
 
     try {
-      view.initialize(new ArrayList<>());
+      List<City> cities = new ArrayList<>();
+      Random rand = new Random();
+      for(GraphNode g : graph.getGraph()) {
+        cities.add(new City(g.getName(), new Point(rand.nextInt(900), rand.nextInt(675))));
+      }
+
+      view.initialize(cities, graph.getEdges());
       mHandler = new MouseHandler();
       view.addMouseListener(mHandler);
       Scanner scan = new Scanner(read);
