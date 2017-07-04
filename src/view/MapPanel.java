@@ -40,7 +40,7 @@ import model.GraphEdge;
           }
         }
       }
-      g2.drawLine((int)city1.getX(), (int)city1.getY(), (int)city2.getX(), (int)city2.getY());
+      g2.drawLine((int)city1.getX()+6, (int)city1.getY()+6, (int)city2.getX()+6, (int)city2.getY()+6);
     }
   }
 

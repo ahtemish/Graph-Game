@@ -3,13 +3,14 @@ package controller;
 import com.sun.corba.se.impl.orbutil.graph.Graph;
 
 import java.awt.*;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
-import model.GraphNode;
 import model.GraphWithEdges;
 import view.City;
 import view.ViewFrame;
@@ -20,11 +21,11 @@ import view.ViewFrame;
 public class GraphController {
   private GraphWithEdges graph;
   private Readable read;
-  private Appendable app;
+  private FileWriter app;
   private MouseHandler mHandler;
   private ViewFrame view;
 
-  public GraphController(GraphWithEdges graph, Readable read, Appendable app) {
+  public GraphController(GraphWithEdges graph, Readable read, FileWriter app) {
     this.graph = graph;
     this.read = read;
     this.app = app;
@@ -38,9 +39,8 @@ public class GraphController {
     try {
       List<City> cities = new ArrayList<>();
       Random rand = new Random();
-      for(GraphNode g : graph.getGraph()) {
-        cities.add(new City(g.getName(), new Point(rand.nextInt(900), rand.nextInt(675))));
-      }
+      cities.addAll(graph.getGraph().stream().map(g -> new City(g.getName(),
+              new Point(rand.nextInt(900), rand.nextInt(675)))).collect(Collectors.toList()));
 
       view.initialize(cities, graph.getEdges());
       mHandler = new MouseHandler();
@@ -54,6 +54,7 @@ public class GraphController {
         message = "\nCurrently in " + graph.getCurrentNode().getName() + ".\n" +
                 graph.getGraph().toString() + "\n";
         app.append(message);
+        app.flush();
 
         String input;
         if (scan.hasNext()) {
@@ -85,13 +86,13 @@ public class GraphController {
             }
             break;
           case "help":
-            app.append("quit - stop the game.\ngoto (city name) - move to the named city.\n" +
+            app.append("\nquit - stop the game.\ngoto (city name) - move to the named city.\n" +
                     "help - brings up this page.\nwhere - lists the cities visitable from the" +
                     " current city.\nconnect (from) (to) - make a connection from the first city" +
                     " to the second one.\n");
             break;
           case "where":
-            message = graph.getCurrentDestinations().toString() + "\n";
+            message = "\n" + graph.getCurrentDestinations().toString() + "\n";
             app.append(message);
             break;
           case "connect":
@@ -137,6 +138,7 @@ public class GraphController {
           default:
             app.append("\nCommand not recognized.\n");
         }
+        app.flush();
       }
     } catch (IOException e) {
       // Hopefully won't happen.
