@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.swing.*;
 
+import model.City;
 import model.GraphEdge;
 
 /**
@@ -25,8 +26,8 @@ import model.GraphEdge;
     Graphics2D g2 = (Graphics2D) g;
     for (City c : cities) {
       g2.setColor(c.getColor());
-      g2.fillOval((int)c.getLocation().getX(), (int)c.getLocation().getY(), 12, 12);
-      g2.drawString(c.getName(), (int)c.getLocation().getX(), (int)c.getLocation().getY()-6);
+      g2.fillOval(c.getLocation().x, c.getLocation().y, 12, 12);
+      g2.drawString(c.getName(), c.getLocation().x, c.getLocation().y-6);
     }
     for (GraphEdge e : edges) {
       Point city1 = null;
@@ -40,7 +41,7 @@ import model.GraphEdge;
           }
         }
       }
-      g2.drawLine((int)city1.getX()+6, (int)city1.getY()+6, (int)city2.getX()+6, (int)city2.getY()+6);
+      g2.drawLine(city1.x+6, city1.y+6, city2.x+6, (int)city2.y+6);
     }
   }
 

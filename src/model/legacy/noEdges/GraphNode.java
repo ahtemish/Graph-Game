@@ -1,4 +1,4 @@
-package model;
+package model.legacy.noEdges;
 
 /**
  * A node for visitable locations.

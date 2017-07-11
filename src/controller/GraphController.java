@@ -1,18 +1,10 @@
 package controller;
 
-import com.sun.corba.se.impl.orbutil.graph.Graph;
-
-import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 import model.GraphWithEdges;
-import view.City;
 import view.ViewFrame;
 
 /**
@@ -37,12 +29,7 @@ public class GraphController {
     String message;
 
     try {
-      List<City> cities = new ArrayList<>();
-      Random rand = new Random();
-      cities.addAll(graph.getGraph().stream().map(g -> new City(g.getName(),
-              new Point(rand.nextInt(900), rand.nextInt(675)))).collect(Collectors.toList()));
-
-      view.initialize(cities, graph.getEdges());
+      view.initialize(graph.getGraph(), graph.getEdges());
       mHandler = new MouseHandler();
       view.addMouseListener(mHandler);
       Scanner scan = new Scanner(read);
@@ -51,7 +38,7 @@ public class GraphController {
       app.append("\nType 'help' for commands.\n");
 
       while (!exit) {
-        message = "\nCurrently in " + graph.getCurrentNode().getName() + ".\n" +
+        message = "\nCurrently in " + graph.getCurrentCity().getName() + ".\n" +
                 graph.getGraph().toString() + "\n";
         app.append(message);
         app.flush();
@@ -79,7 +66,7 @@ public class GraphController {
             String dest = scan.next();
 
             try {
-              graph.moveToNode(dest);
+              graph.moveToCity(dest);
             } catch (IllegalArgumentException e) {
               message = "\n" + e.getLocalizedMessage() + "\n";
               app.append(message);

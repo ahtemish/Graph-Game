@@ -1,54 +1,41 @@
 package model;
 
+import java.awt.*;
+import java.awt.geom.IllegalPathStateException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * Abstract class containing methods shared between TravelGraphs that deal with edges.
  */
 abstract class TravellingWithEdges implements GraphWithEdges {
-  List<GraphNode> graph;
-  GraphNode currentNode;
+  Map<String, City> graph;
+  City currentCity;
   List<GraphEdge> edges;
+  Color color;
 
-  private int findNodeIndex(String name) {
-    if (nodeInGraph(name)) {
-      for (GraphNode g : graph) {
-        if (g.getName().equals(name)) {
-          return graph.indexOf(g);
-        }
-      }
-      throw new IllegalArgumentException("Named node does not exist in this graph.");
-    } else {
-      throw new IllegalArgumentException("Named node does not exist in this graph.");
-    }
+  private boolean cityInGraph(String name) {
+    return graph.containsKey(name);
   }
 
-  private boolean nodeInGraph(String name) {
-    for (GraphNode g : graph) {
-      if (g.getName().equals(name)) {
-        return true;
-      }
-    }
-    return false;
+  public City getCurrentCity() {
+    return currentCity;
   }
 
-  public GraphNode getCurrentNode() {
-    return currentNode;
-  }
-
-  public List<GraphNode> getGraph() {
-    return graph;
+  public List<City> getGraph() {
+    return new ArrayList<>(graph.values());
   }
 
   public List<String> getCurrentDestinations() {
     List<String> dest = new ArrayList<>();
 
     for (GraphEdge e : edges) {
-      if (e.getNodes().get(0).equals(currentNode)) {
-        dest.add(e.getNodes().get(1).getName());
-      } else if (e.getNodes().get(1).equals(currentNode)) {
-        dest.add(e.getNodes().get(0).getName());
+      if (e.getCities().get(0).equals(currentCity)) {
+        dest.add(e.getCities().get(1).getName());
+      } else if (e.getCities().get(1).equals(currentCity)) {
+        dest.add(e.getCities().get(0).getName());
       }
     }
     return dest;
@@ -58,19 +45,18 @@ abstract class TravellingWithEdges implements GraphWithEdges {
     return edges;
   }
 
-  public void moveToNode(String name) {
-    boolean moved = false;
+  public void moveToCity(String name) {
 
-    if (nodeInGraph(name)) {
+    if (cityInGraph(name)) {
       if (canMoveTo(name)) {
-        currentNode = graph.get(findNodeIndex(name));
-        moved = true;
-      }
-      if (!moved) {
-        if (currentNode.getName().equals(name)) {
-          throw new IllegalArgumentException("Already at " + name + ".");
+        currentCity.switchCurrent();
+        currentCity = graph.get(name);
+        currentCity.switchCurrent();
+      } else {
+        if (currentCity.getName().equals(name)) {
+          throw new IllegalArgumentException("Already in " + name + ".");
         } else {
-          throw new IllegalArgumentException("Cannot travel to " + name + " from " + currentNode.getName() + ".");
+          throw new IllegalArgumentException("Cannot travel to " + name + " from " + currentCity.getName() + ".");
         }
       }
     } else {
@@ -83,25 +69,33 @@ abstract class TravellingWithEdges implements GraphWithEdges {
   }
 
   public void addEdge(String name1, String name2) {
-    GraphNode node1 = new GraphNode(name1);
-    GraphNode node2 = new GraphNode(name2);
-    if (graph.size() == 0) {
-      currentNode = node1;
-      graph.add(node1);
-      graph.add(node2);
-      edges.add(new GraphEdge(node1, node2));
+    City city1 = null;
+    City city2 = null;
+    Random rand = new Random();
+
+    if (graph.isEmpty()) {
+      city1 = new City(name1, new Point(rand.nextInt(900), rand.nextInt(675)));
+      city2 = new City(name2, new Point(rand.nextInt(900), rand.nextInt(675)));
+      currentCity = city1;
+      graph.put(name1, city1);
+      graph.put(name2, city2);
+      edges.add(new GraphEdge(city1, city2));
     } else {
-      if (!nodeInGraph(name1) && !nodeInGraph(name2)) {
-        throw new IllegalArgumentException("Neither node is in the graph, cannot add this edge.");
+        city1 = graph.get(name1);
+        city2 = graph.get(name2);
+      if(city1 != null || city2 != null) {
+        if (city1 == null) {
+          city1 = new City(name1, new Point(rand.nextInt(900), rand.nextInt(675)));
+          graph.put(name1, city1);
+        }
+        if (city2 == null) {
+          city2 = new City(name2, new Point(rand.nextInt(900), rand.nextInt(675)));
+          graph.put(name2, city2);
+        }
       } else {
-        if (!nodeInGraph(name1)) {
-          graph.add(node1);
-        }
-        if (!nodeInGraph(name2)) {
-          graph.add(node2);
-        }
+        throw new IllegalArgumentException("Neither city is in the graph, cannot add this edge.");
       }
-      edges.add(new GraphEdge(node1, node2));
+      edges.add(new GraphEdge(city1, city2));
     }
   }
 
@@ -109,10 +103,10 @@ abstract class TravellingWithEdges implements GraphWithEdges {
     int remIndex = 0;
     boolean remove = false;
 
-    if (nodeInGraph(name1) && nodeInGraph(name2)) {
+    if (cityInGraph(name1) && cityInGraph(name2)) {
       for (GraphEdge e : edges) {
-        if (e.getNodes().contains(new GraphNode(name1)) &&
-                e.getNodes().contains(new GraphNode(name2))) {
+        if (e.getCities().contains(graph.get(name1)) &&
+                e.getCities().contains(graph.get(name2))) {
           remove = true;
           remIndex = edges.indexOf(e);
         }

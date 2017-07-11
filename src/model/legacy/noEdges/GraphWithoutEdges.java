@@ -2,8 +2,6 @@ package model.legacy.noEdges;
 
 import java.util.List;
 
-import model.GraphNode;
-
 /**
  *
  * Specifies a graph that does not have set edges to deal with.

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.swing.*;
 
+import model.City;
 import model.GraphEdge;
 
 /**

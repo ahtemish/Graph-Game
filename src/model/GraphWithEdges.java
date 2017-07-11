@@ -8,13 +8,13 @@ import java.util.List;
 public interface GraphWithEdges {
   boolean canMoveTo(String name);
 
-  GraphNode getCurrentNode();
+  City getCurrentCity();
 
-  List<GraphNode> getGraph();
+  List<City> getGraph();
 
   List<GraphEdge> getEdges();
 
-  void moveToNode(String name);
+  void moveToCity(String name);
 
   void removeEdge(String name1, String name2);
 
